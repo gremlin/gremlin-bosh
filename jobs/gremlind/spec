@@ -1,0 +1,72 @@
+---
+name: gremlind
+
+templates:
+  config.yaml:            config.yaml
+  bin/pre-start:          bin/pre-start
+  bin/start-gremlind.sh:  bin/start-gremlind.sh
+  bin/stop-gremlind.sh:   bin/stop-gremlind.sh
+
+packages:
+- gremlin
+
+properties:
+  gremlin.service_url:
+    description: "Gremlin Control Plane URL (e.g. https://api.gremlin.com)"
+    default: "https://api.gremlin.com"
+  gremlin.identifier:
+    description: "Custom identifier"
+    default: ""
+  gremlin.team_id:
+    description: "Gremlin Team ID"
+    default: ""
+  gremlin.team_secret:
+    description: "Gremlin Team Secret"
+    default: ""
+  gremlin.team_certificate:
+    description: "PEM public cert"
+    default: ""
+  gremlin.team_private_key:
+    description: "PEM private key"
+    default: ""
+  gremlin.tags:
+    description: "Custom tags"
+    default: {}
+  gremlin.https_proxy:
+    description: "HTTPS proxy URL"
+    default: ""
+  gremlin.ssl_cert_file:
+    description: "TLS CA for proxy"
+    default: ""
+  gremlin.push_metrics:
+    description: "Push metrics?"
+    default: true
+  gremlin.collect_processes:
+    description: "Process collection?"
+    default: true
+  gremlin.collect_dns:
+    description: "DNS collection?"
+    default: true
+  gremlin.iam_role:
+    description: "AWS IAM role ARN"
+    default: ""
+  gremlin.install_user:
+    description: "Linux user for Gremlin files"
+    default: "gremlin"
+  gremlin.install_group:
+    description: "Linux group for Gremlin files"
+    default: "gremlin"
+  gremlin.install_bin_mode:
+    description: "File mode for gremlin executables"
+    default: "0750"
+  gremlin.install_bin_capabilities:
+    description: "Whether to set Linux caps on gremlin client"
+    default: true
+
+monit:
+  name:     gremlind
+  pid_file: "{{sys.run}}/gremlind/gremlind.pid"
+  start:    "{{job.run}}/bin/start-gremlind.sh"
+  stop:     "{{job.run}}/bin/stop-gremlind.sh"
+  group:    gremlin
+

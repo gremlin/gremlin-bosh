@@ -1,0 +1,16 @@
+---
+# config/final.yml
+
+# must match your release name
+name: gremlin
+
+# used by the --version flag
+version: ((release_version))
+
+# configure a local blobstore for 'bosh create-release'
+blobstore:
+  provider: local
+  options:
+    blobstore_path: ./blobs
+    temp_dir: ./tmp
+

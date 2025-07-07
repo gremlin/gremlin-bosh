@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+INSTALL_USER="<%= p('gremlin.install_user') %>"
+INSTALL_GROUP="<%= p('gremlin.install_group') %>"
+
+# Create group & user if they don’t exist
+getent group "${INSTALL_GROUP}" >/dev/null \
+  || groupadd -r "${INSTALL_GROUP}"
+getent passwd "${INSTALL_USER}" >/dev/null \
+  || useradd -r -g "${INSTALL_GROUP}" \
+      -d /var/lib/gremlin -s /sbin/nologin \
+      -c "Gremlin Service User" "${INSTALL_USER}"
+
+# Prepare runtime directories
+for d in /etc/gremlin /var/lib/gremlin /var/log/gremlin /var/vcap/sys/run/gremlind; do
+  mkdir -p "${d}"
+  chown "${INSTALL_USER}:${INSTALL_GROUP}" "${d}"
+  chmod 750 "${d}"
+done
+
+# Install & cap the gremlin client binaries
+BIN_DIR="/var/vcap/packages/gremlin"
+chmod <%= p('gremlin.install_bin_mode') %> \
+      "${BIN_DIR}/bin/gremlin" "${BIN_DIR}/bin/gremlin-gpu"
+chown root:root "${BIN_DIR}/bin/gremlin" "${BIN_DIR}/bin/gremlin-gpu"
+
+if [ "<%= p('gremlin.install_bin_capabilities') %>" = "true" ]; then
+  command -v setcap >/dev/null \
+    || { echo "ERROR: setcap missing; include libcap2-bin" >&2; exit 1; }
+  # gremlin client
+  setcap cap_sys_boot,cap_kill,cap_sys_time,cap_net_admin,cap_net_raw,cap_sys_admin,cap_sys_chroot,cap_dac_read_search,cap_sys_ptrace,cap_net_bind_service+ep \
+    "${BIN_DIR}/bin/gremlin"
+  # allow container networking (tc)
+  setcap cap_net_admin+ep "$(command -v tc)"
+  # allow raw sockets (ping)
+  setcap cap_net_raw+ep "$(command -v ping)"
+fi
+
+# Create a symlink explicitly to /usr/local/bin (BOSH-safe)
+if [ ! -L /usr/local/bin/gremlin ]; then
+  ln -s /var/vcap/packages/gremlin/bin/gremlin /usr/local/bin/gremlin
+fi
+

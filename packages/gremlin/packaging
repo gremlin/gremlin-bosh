@@ -1,0 +1,10 @@
+#!/bin/bash
+set -ex
+
+mkdir -p "${BOSH_INSTALL_TARGET}/bin" "${BOSH_INSTALL_TARGET}/sbin"
+tar xzf gremlin/gremlin.tar.gz  -C "${BOSH_INSTALL_TARGET}/bin"
+tar xzf gremlin/gremlind.tar.gz -C "${BOSH_INSTALL_TARGET}/sbin"
+
+chmod +x "${BOSH_INSTALL_TARGET}/bin/gremlin"* \
+         "${BOSH_INSTALL_TARGET}/sbin/gremlind"
+
