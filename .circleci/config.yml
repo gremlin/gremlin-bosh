@@ -1,0 +1,27 @@
+version: 2.1
+
+orbs:
+  circleci-cli: circleci/circleci-cli@0.1.9
+
+executors:
+  base:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+
+jobs:
+  validate:
+    executor: base
+    steps:
+      - checkout
+      - circleci-cli/install
+      - run:
+          name: Validate configuration files
+          command: make validate
+
+workflows:
+  validate:
+    jobs:
+      - validate:
+          context:
+            - circleci-api-token
