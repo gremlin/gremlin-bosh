@@ -12,43 +12,43 @@ packages:
 
 properties:
   gremlin.service_url:
-    description: "Gremlin Control Plane URL (e.g. https://api.gremlin.com)"
-    default: "https://api.gremlin.com"
+    description: "Gremlin Control Plane URL"
+    default: ""
   gremlin.identifier:
-    description: "Custom identifier"
+    description: "a string that uniquely identifies a Gremlin installation (defaults to the host's IP address)"
     default: ""
   gremlin.team_id:
-    description: "Gremlin Team ID"
+    description: "ID of your Gremlin team"
     default: ""
   gremlin.team_secret:
-    description: "Gremlin Team Secret"
+    description: "the secret value (used by secret authentication only)"
     default: ""
   gremlin.team_certificate:
-    description: "PEM public cert"
+    description: "the public portion of the certificate-pair (required for signature auth only)"
     default: ""
   gremlin.team_private_key:
-    description: "PEM private key"
+    description: "the private portion of the certificate-pair (required for signature auth only)"
     default: ""
   gremlin.tags:
-    description: "Custom tags"
+    description: "key-value pairs that help you target this machine during experiments"
     default: {}
   gremlin.https_proxy:
-    description: "HTTPS proxy URL"
+    description: "the url of a proxy in between Gremlin and the Gremlin control plane"
     default: ""
   gremlin.ssl_cert_file:
-    description: "TLS CA for proxy"
+    description: "the ssl certificate for your https proxy"
     default: ""
   gremlin.push_metrics:
-    description: "Push metrics?"
+    description: "set to false if you would like to disable system metrics used for experiment charting (defaults to true)"
     default: true
   gremlin.collect_processes:
-    description: "Process collection?"
+    description: "enables/disables Process Collection (as of Linux Agent 2.25.0 defaults to true)"
     default: true
   gremlin.collect_dns:
-    description: "DNS collection?"
+    description: "collect dns data, data about network-bound dependencies is sent to Gremlin for service discovery (defaults to true)"
     default: true
   gremlin.iam_role:
-    description: "AWS IAM role ARN"
+    description: "role the agent uses to retrieve remote cloud config values"
     default: ""
   gremlin.install_user:
     description: "Linux user for Gremlin files"
