@@ -2,13 +2,18 @@ identifier: "<%= p("gremlin.identifier").to_s.empty? ? "#{@spec.name}-#{@spec.id
 
 team_id: <%= p("gremlin.team_id") %>
 
-<% if p("gremlin.service_url") != "" %>
-service_url: <%= p("gremlin.service_url") %>
+<% if_p("gremlin.service_url") do %>
+service_url: "<%= p("gremlin.service_url") %>"
+<% end %>
+  
+<% if_p("gremlin.ssl_cert_file") do %>
+ssl_cert_file: "<%= p("gremlin.ssl_cert_file") %>"
 <% end %>
 
-<% if p("gremlin.team_secret") != "" %>
+
+<% if_p("gremlin.team_secret") do %>
 team_secret: <%= p("gremlin.team_secret") %>
-<% else %>
+<% end.else do %>
 team_certificate: |
 <%= p("gremlin.team_certificate").to_s.gsub(/^/, "  ") %>
 
@@ -16,19 +21,16 @@ team_private_key: |
 <%= p("gremlin.team_private_key").to_s.gsub(/^/, "  ") %>
 <% end %>
 
-<% if p("gremlin.https_proxy") != "" %>
-https_proxy: <%= p("gremlin.https_proxy") %>
+<% if_p("gremlin.https_proxy") do %>
+https_proxy: "<%= p("gremlin.https_proxy") %>"
 <% end %>
 
-<% if p("gremlin.ssl_cert_file") != "" %>
-ssl_cert_file: <%= p("gremlin.ssl_cert_file") %>
-<% end %>
 
 push_metrics:      <%= p("gremlin.push_metrics") %>
 collect_processes: <%= p("gremlin.collect_processes") %>
 collect_dns:       <%= p("gremlin.collect_dns") %>
 
-<% unless p("gremlin.iam_role").empty? %>
+<% if_p("gremlin.iam_role") do %>
 iam_role: <%= p("gremlin.iam_role") %>
 <% end %>
 

@@ -13,7 +13,7 @@ packages:
 properties:
   gremlin.service_url:
     description: "Gremlin Control Plane URL (e.g. https://api.gremlin.com)"
-    default: "https://api.gremlin.com"
+    default: "https://api.gremlin.com/v1"
   gremlin.identifier:
     description: "Custom identifier"
     default: ""
