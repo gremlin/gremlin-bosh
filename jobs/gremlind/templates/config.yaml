@@ -7,9 +7,9 @@ service_url: "<%= p("gremlin.service_url") %>"
 <% end %>
   
 <% if_p("gremlin.ssl_cert_file") do %>
-ssl_cert_file: "<%= p("gremlin.ssl_cert_file") %>"
+ssl_cert_file: |
+<%= p("gremlin.ssl_cert_file").to_s.gsub(/^/, "  ") %>
 <% end %>
-
 
 <% if_p("gremlin.team_secret") do %>
 team_secret: <%= p("gremlin.team_secret") %>
