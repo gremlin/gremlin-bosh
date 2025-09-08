@@ -19,7 +19,7 @@ team_private_key: |
 <% if p("gremlin.tags") != "" %>
 tags:
 <% p("gremlin.tags").each do |key, value| -%>
-  <%= key %>: <%= value -%>
+  <%= key %>: <%= value %>
 <% end -%>
 <% end %>
 
