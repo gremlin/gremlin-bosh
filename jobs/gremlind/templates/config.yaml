@@ -1,45 +1,52 @@
-<% if p("gremlin.service_url") != "" %>
+<% if p("gremlin.service_url") != "" -%>
 service_url: <%= p("gremlin.service_url") %>
-<% end %>
+<% end -%>
 
 identifier: "<%= p("gremlin.identifier").to_s.empty? ? "#{@spec.name}-#{@spec.id}" : p("gremlin.identifier") %>"
 
 team_id: <%= p("gremlin.team_id") %>
 
-<% if p("gremlin.team_secret") != "" %>
+<% if p("gremlin.team_secret") != "" -%>
 team_secret: <%= p("gremlin.team_secret") %>
-<% else %>
+<% else -%>
+<% if p("gremlin.team_certificate").strip.start_with?("-----BEGIN") -%>
 team_certificate: |
 <%= p("gremlin.team_certificate").to_s.gsub(/^/, "  ") %>
-
+<% else -%>
+team_certificate: <%= p("gremlin.team_certificate") %>
+<% end -%>
+<% if p("gremlin.team_private_key").strip.start_with?("-----BEGIN") -%>
 team_private_key: |
 <%= p("gremlin.team_private_key").to_s.gsub(/^/, "  ") %>
-<% end %>
+<% else -%>
+team_private_key: <%= p("gremlin.team_private_key") %>
+<% end -%>
+<% end -%>
   
-<% if p("gremlin.tags") != "" %>
+<% if p("gremlin.tags").is_a?(Hash) && p("gremlin.tags").any? -%>
 tags:
 <% p("gremlin.tags").each do |key, value| -%>
   <%= key %>: <%= value %>
 <% end -%>
-<% end %>
+<% end -%>
 
-<% if p("gremlin.https_proxy") != "" %>
+<% if p("gremlin.https_proxy") != "" -%>
 https_proxy: <%= p("gremlin.https_proxy") %>
-<% end %>
+<% end -%>
 
-<% if p("gremlin.ssl_cert_file") != "" %>
+<% if p("gremlin.ssl_cert_file") != "" -%>
 <% if p("gremlin.ssl_cert_file").strip.start_with?("-----BEGIN") -%>
 ssl_cert_file: |
 <%= p("gremlin.ssl_cert_file").gsub(/^/, "  ") %>
 <% else -%>
 ssl_cert_file: <%= p("gremlin.ssl_cert_file") %>
 <% end -%>
-<% end %>
+<% end -%>
 
 push_metrics:      <%= p("gremlin.push_metrics") %>
 collect_processes: <%= p("gremlin.collect_processes") %>
 collect_dns:       <%= p("gremlin.collect_dns") %>
 
-<% unless p("gremlin.iam_role").empty? %>
+<% unless p("gremlin.iam_role").empty? -%>
 iam_role: <%= p("gremlin.iam_role") %>
-<% end %>
+<% end -%>
