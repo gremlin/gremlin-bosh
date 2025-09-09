@@ -69,7 +69,6 @@ describe "gremlind job" do
     it "renders as inline certificate" do
       manifest = { "gremlin" => { "ssl_cert_file" => "-----BEGIN CERTIFICATE-----\nabc\n-----BEGIN CERTIFICATE-----\n" } }
       rendered = YAML.safe_load(template.render(manifest))
-      puts rendered
       expect(rendered["ssl_cert_file"]).to eq("-----BEGIN CERTIFICATE-----\nabc\n-----BEGIN CERTIFICATE-----\n")
     end
 
