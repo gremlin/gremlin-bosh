@@ -1,0 +1,17 @@
+---
+name: gremlind
+icon_file: resources/gremlin.png
+label: Gremlin Agent
+description: Gremlin Agent
+version: 0.0.1-dev
+
+packages:
+ - name: gremlind
+   type: bosh-release
+   path: resources/gremlin-bosh-0.0.1-dev.tgz
+   jobs:
+   - name: gremlind
+     instances: 1
+     templates:
+     - name: gremlind
+       release: gremlin
